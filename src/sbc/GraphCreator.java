@@ -5,11 +5,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Paint;
 import java.awt.Stroke;
+import java.util.HashMap;
+
+import javax.management.Query;
 import javax.swing.JPanel;
 
 import org.apache.commons.collections15.Transformer;
 import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
+import org.apache.jena.rdf.model.RDFNode;
 
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
@@ -26,35 +31,42 @@ public class GraphCreator {
 		
 	}
 	
-	public static void createGraph_A1_R1(QueryExecution query) {
+	public static JPanel createGraph_A1_R1(String classe, int limit) {
+		Query query = RequestBuilder.A1_R1(classe, limit);
+		ResultSet rs = query.execSelect();
+		ResultSet rs2 = rs;
+		Graph<Node,Vertex> graph = new DirectedSparseMultigraph<Node,Vertex>();
+		HashMap<String, Node> nodeMap = new HashMap<String, Node>();
+		nodeMap.put(classe, new Node(classe));
+		
+		while (rs.hasNext()) {
+			QuerySolution sol = rs.next();
+			RDFNode rel = sol.get("relation");
+			RDFNode obj = sol.get("otherclass");
+			
+			if (!nodeMap.containsKey(obj.toString())) {
+				nodeMap.put(obj.toString(), new Node(obj.toString()));
+			}
+			
+			graph.addEdge(new Vertex(rel.toString()), nodeMap.get(classe), nodeMap.get(obj.toString()));
+		}
+		
+		return GraphCreator.visualization(graph);
+	}
+	/*
+	public static JPanel createGraph_A1_R2(String classe, int limit) {
 		ResultSet rs = query.execSelect();
 	}
 	
-	public static void createGraph_A1_R2(QueryExecution query) {
+	public static JPanel createGraph_A2(String classe, int limit) {
 		ResultSet rs = query.execSelect();
 	}
 	
-	public static void createGraph_A2(QueryExecution query) {
+	public static JPanel createGraph_A2bis(String classe, int limit) {
 		ResultSet rs = query.execSelect();
 	}
 	
-	public static void createGraph_A3(QueryExecution query) {
-		ResultSet rs = query.execSelect();
-	}
-	
-	public static void createGraph_B1(QueryExecution query) {
-		ResultSet rs = query.execSelect();
-	}
-	
-	public static void createGraph_B3(QueryExecution query) {
-		ResultSet rs = query.execSelect();
-	}
-	
-	public static void createGraph_C1(QueryExecution query) {
-		ResultSet rs = query.execSelect();
-	}
-	
-	public static void createGraph_C2(QueryExecution query) {
+	public static JPanel createGraph_A3(String classe, int limit) {
 		ResultSet rs = query.execSelect();
 	}
 	
@@ -63,7 +75,7 @@ public class GraphCreator {
 				
 		graph.addEdge(new Vertex("link"), new Node("n1"), new Node("n2"));
 		return graph;
-	}
+	}*/
 	
 	public static JPanel visualization(Graph<Node,Vertex> g) {
 		Layout<Integer, String> layout = new CircleLayout(g);
