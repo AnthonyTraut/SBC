@@ -48,7 +48,7 @@ public class Frame extends JFrame{
 	    
 	    JPanel midPanel = new JPanel();
 	    midPanel.setBackground(Color.WHITE);
-	    midPanel.add(GraphCreator.createGraph_A2("http://dbpedia.org/ontology/Planet", 10));
+	    midPanel.add(GraphCreator.createGraph_A3("http://dbpedia.org/ontology/CelestialBody", 10));
 	    
 	    this.getContentPane().setLayout(new BorderLayout());
 	    this.getContentPane().add(topPanel, BorderLayout.NORTH);

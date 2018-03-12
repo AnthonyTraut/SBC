@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Paint;
 import java.awt.Stroke;
 import java.util.HashMap;
+import java.util.Scanner;
 
 import javax.sound.midi.Synthesizer;
 import javax.swing.JPanel;
@@ -20,11 +21,15 @@ import org.apache.jena.rdf.model.RDFNode;
 
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
+import edu.uci.ics.jung.algorithms.layout.TreeLayout;
+import edu.uci.ics.jung.graph.DelegateForest;
 import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
+import edu.uci.ics.jung.graph.Forest;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.BasicVisualizationServer;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
+import javafx.scene.shape.Line;
 
 public class GraphCreator {
 
@@ -94,13 +99,13 @@ public class GraphCreator {
 	}
 
 	/**
-	 * Afficher la hiérarchie d’une class
+	 * Afficher la hiérarchie d’une classe
 	 * @param classe
 	 * @param limit
 	 * @return
 	 */
 	public static JPanel createGraph_A2(String classe, int limit) {
-		Graph<Node,Vertex> graph = new DirectedSparseMultigraph<Node,Vertex>();
+		Graph<Node,Vertex> graph = new DelegateForest<Node,Vertex>();
 		HashMap<String, Node> nodeMap = new HashMap<String, Node>();
 		String string_classe = classe.toString().split("/")[classe.toString().split("/").length-1];
 		nodeMap.put(classe, new Node(classe, string_classe, Color.blue));
@@ -152,21 +157,51 @@ public class GraphCreator {
 		return GraphCreator.visualization(graph);
 	}
 	
-	/*
-	public static JPanel createGraph_A2(String classe, int limit) {
-		ResultSet rs = query.execSelect();
-	}
-	
-	public static JPanel createGraph_A2bis(String classe, int limit) {
-		ResultSet rs = query.execSelect();
-	}
-	
+	/**
+	 * Afficher les relations instanciées d’une classe
+	 * @param classe
+	 * @param limit
+	 * @return
+	 */
 	public static JPanel createGraph_A3(String classe, int limit) {
-		ResultSet rs = query.execSelect();
-	}*/
+		Graph<Node,Vertex> graph = new DirectedSparseMultigraph<Node,Vertex>();
+		HashMap<String, Node> nodeMap = new HashMap<String, Node>();
+		String string_classe = classe.toString().split("/")[classe.toString().split("/").length-1];
+		nodeMap.put(classe, new Node(classe, string_classe, Color.BLUE));
+		
+		// Afficher CLASS ?relation ?otherclass
+		QueryExecution queryexec = GraphCreator.execQuery(RequestBuilder.A3(classe, limit));
+		ResultSet res = queryexec.execSelect();
+		while (res.hasNext()) {
+			QuerySolution sol = res.next();
+			
+			RDFNode count = sol.get("count");
+			String temp = count.toString();
+			String string_count = "";
+			int i = 0 ;
+			while(i<temp.length()-1 && Character.isDigit(temp.charAt(i))) {
+				string_count = string_count + temp.charAt(i);
+				i++;
+			}
+			
+			RDFNode rel = sol.get("relation");
+			String url_rel = rel.toString();
+			String string_rel = rel.toString().split("/")[rel.toString().split("/").length-1];
+			
+			graph.addEdge(new Vertex(url_rel, string_rel, "A-Box"), nodeMap.get(classe), new Node("", string_count,Color.YELLOW));
+		}
+		
+		return GraphCreator.visualization(graph);
+	}
 	
+	/**
+	 * Transformer le graphe en JPanel
+	 * @param g
+	 * @return
+	 */
 	public static JPanel visualization(Graph<Node,Vertex> g) {
 		Layout<Node,Vertex> layout = new CircleLayout(g);
+		//Layout<Node,Vertex> layout = new TreeLayout((Forest) g);
 		BasicVisualizationServer<Node,Vertex> vv = new BasicVisualizationServer<Node,Vertex>(layout);
 
 		Transformer<Node,Paint> nodePaint = new Transformer<Node,Paint>() {
@@ -175,17 +210,15 @@ public class GraphCreator {
 			}
 		};
 		
-		float dash[] = {10.0f};
-		final Stroke edgeStroke = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f);
 		Transformer<Vertex, Stroke> vertexPaint = new Transformer<Vertex, Stroke>() {
 			public Stroke transform(Vertex vertex) {
+				float dash[] = {10.0f};
 				if (vertex.getBoxType().equals("T-Box")) {
-					//TODO
 				}
 				if (vertex.getBoxType().equals("subClassOf")) {
-					//TODO
+					return new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
 				}
-				return edgeStroke;
+				return new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f);
 			}
 		};
 		
