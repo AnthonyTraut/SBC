@@ -2,9 +2,11 @@ package sbc;
 
 public class Node {
 	
+	private String url;
 	private String label;
 	
-	public Node(String label) {
+	public Node(String url, String label) {
+		this.url=url;
 		this.label=label;
 	}
 	

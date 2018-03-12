@@ -7,6 +7,7 @@ import java.awt.Paint;
 import java.awt.Stroke;
 import java.util.HashMap;
 
+import javax.sound.midi.Synthesizer;
 import javax.swing.JPanel;
 
 import org.apache.commons.collections15.Transformer;
@@ -37,24 +38,48 @@ public class GraphCreator {
 		return queryexec;
 	}
 	
-	public static JPanel createGraph_A1_R1(String classe, int limit) {
+	public static JPanel createGraph_A1(String classe, int limit) {
 		QueryExecution queryexec = GraphCreator.execQuery(RequestBuilder.A1_R1(classe, limit));
-		ResultSet rs = queryexec.execSelect();
+		ResultSet res = queryexec.execSelect();
 		
 		Graph<Node,Vertex> graph = new DirectedSparseMultigraph<Node,Vertex>();
 		HashMap<String, Node> nodeMap = new HashMap<String, Node>();
-		nodeMap.put(classe, new Node(classe));
+		String string_classe = classe.toString().split("/")[classe.toString().split("/").length-1];
+		System.out.println(string_classe);
+		nodeMap.put(classe, new Node(classe, string_classe));
 		
-		while (rs.hasNext()) {
-			QuerySolution sol = rs.next();
+		while (res.hasNext()) {
+			QuerySolution sol = res.next();
 			RDFNode rel = sol.get("relation");
+			String url_rel = rel.toString();
+			String string_rel = rel.toString().split("/")[rel.toString().split("/").length-1];
 			RDFNode c = sol.get("otherclass");
+			String url_c = c.toString();
+			String string_c = c.toString().split("/")[c.toString().split("/").length-1];
 			
-			if (!nodeMap.containsKey(c.toString())) {
-				nodeMap.put(c.toString(), new Node(c.toString()));
+			if (!nodeMap.containsKey(url_c)) {
+				nodeMap.put(url_c, new Node(url_c, string_c));
 			}
 			
-			graph.addEdge(new Vertex(rel.toString()), nodeMap.get(classe), nodeMap.get(c.toString()));
+			graph.addEdge(new Vertex(url_rel, string_rel), nodeMap.get(classe), nodeMap.get(url_c));
+		}
+		
+		queryexec = GraphCreator.execQuery(RequestBuilder.A1_R2(classe, limit));
+		res = queryexec.execSelect();
+		while (res.hasNext()) {
+			QuerySolution sol = res.next();
+			RDFNode rel = sol.get("relation");
+			String url_rel = rel.toString();
+			String string_rel = rel.toString().split("/")[rel.toString().split("/").length-1];
+			RDFNode c = sol.get("otherclass");
+			String url_c = c.toString();
+			String string_c = c.toString().split("/")[c.toString().split("/").length-1];
+			
+			if (!nodeMap.containsKey(url_c)) {
+				nodeMap.put(url_c, new Node(url_c, string_c));
+			}
+			
+			graph.addEdge(new Vertex(url_rel, string_rel), nodeMap.get(url_c), nodeMap.get(classe));
 		}
 		
 		return GraphCreator.visualization(graph);
@@ -76,29 +101,20 @@ public class GraphCreator {
 		ResultSet rs = query.execSelect();
 	}*/
 	
-	public static Graph<Node,Vertex> create(ResultSet res) {
-		Graph<Node,Vertex> graph = new DirectedSparseMultigraph<Node,Vertex>();
-				
-		graph.addEdge(new Vertex("link"), new Node("n1"), new Node("n2"));
-		return graph;
-	}
-	
 	public static JPanel visualization(Graph<Node,Vertex> g) {
-		Layout<Integer, String> layout = new CircleLayout(g);
-		layout.setSize(new Dimension(300,300));
-		BasicVisualizationServer<Integer,String> vv = new BasicVisualizationServer<Integer,String>(layout);
-		vv.setPreferredSize(new Dimension(350,350));
-		/*
-		Transformer<Integer,Paint> vertexPaint = new Transformer<Integer,Paint>() {
-			public Paint transform(Integer i) {
+		Layout<Node,Vertex> layout = new CircleLayout(g);
+		BasicVisualizationServer<Node,Vertex> vv = new BasicVisualizationServer<Node,Vertex>(layout);
+
+		Transformer<Node,Paint> vertexPaint = new Transformer<Node,Paint>() {
+			public Paint transform(Node i) {
 				return Color.GREEN;
 			}
 		};
 		
 		float dash[] = {10.0f};
 		final Stroke edgeStroke = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f);
-		Transformer<String, Stroke> edgeStrokeTransformer = new Transformer<String, Stroke>() {
-			public Stroke transform(String s) {
+		Transformer<Vertex, Stroke> edgeStrokeTransformer = new Transformer<Vertex, Stroke>() {
+			public Stroke transform(Vertex s) {
 				return edgeStroke;
 			}
 		};
@@ -108,7 +124,7 @@ public class GraphCreator {
 		vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
 		vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller());
 		vv.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);
-		*/
+
 		JPanel panel = new JPanel();
 		panel.add(vv);
 		return panel;
