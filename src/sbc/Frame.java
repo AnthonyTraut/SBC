@@ -125,7 +125,7 @@ public class Frame extends JFrame{
 	    JPanel midPanel = new JPanel();
 	    midPanel.setLayout(new BorderLayout());
 	    midPanel.setBackground(Color.WHITE);
-	    midPanel.add(GraphCreator.createGraph_A1_R1("http://dbpedia.org/ontology/Planet", 10));
+	    midPanel.add(GraphCreator.createGraph_A1("http://dbpedia.org/ontology/Planet", 10));
 	    
 	    this.getContentPane().setLayout(new BorderLayout());
 	    this.getContentPane().add(menuPanel, BorderLayout.WEST);
