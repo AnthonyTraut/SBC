@@ -27,6 +27,14 @@ public class GraphCreator {
 		
 	}
 	
+	public static void createGraph_A1_R1() {
+		
+	}
+	
+	public static void createGraph_A1_R2() {
+		
+	}
+	
 	public static Graph<Node,Vertex> create(ResultSet res) {
 		Graph<Node,Vertex> graph = new DirectedSparseMultigraph<Node,Vertex>();
 				
