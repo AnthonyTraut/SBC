@@ -25,7 +25,7 @@ PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
 PREFIX sdmx:   <http://purl.org/linked-data/sdmx#>*/
 
 	public static void main(String args[]){
-		Query query = QueryFactory.create("PREFIX dbo:<http://dbpedia.org/ontology/>\n"
+		/*Query query = QueryFactory.create("PREFIX dbo:<http://dbpedia.org/ontology/>\n"
 				+ "PREFIX dbpedia: <http://dbpedia.org/>\n"
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
 				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
@@ -73,7 +73,7 @@ PREFIX sdmx:   <http://purl.org/linked-data/sdmx#>*/
 
 	    	// use result set formatter
 	    	ResultSetFormatter.out(rs);
-	    }
+	    }*/
 	    
 	    Frame frame = new Frame();
 	}	

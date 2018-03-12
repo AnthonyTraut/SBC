@@ -7,12 +7,13 @@ import java.awt.Paint;
 import java.awt.Stroke;
 import java.util.HashMap;
 
-import javax.management.Query;
 import javax.swing.JPanel;
 
 import org.apache.commons.collections15.Transformer;
 import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.Query;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.RDFNode;
 
@@ -26,15 +27,20 @@ import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 
 public class GraphCreator {
 
-	
+	private static String sparqlService  = "http://dbpedia.org/sparql";
 	public GraphCreator() {
 		
 	}
 	
+	public static QueryExecution execQuery(Query query) {
+		QueryExecution queryexec = QueryExecutionFactory.sparqlService(sparqlService, query);
+		return queryexec;
+	}
+	
 	public static JPanel createGraph_A1_R1(String classe, int limit) {
-		Query query = RequestBuilder.A1_R1(classe, limit);
-		ResultSet rs = query.execSelect();
-		ResultSet rs2 = rs;
+		QueryExecution queryexec = GraphCreator.execQuery(RequestBuilder.A1_R1(classe, limit));
+		ResultSet rs = queryexec.execSelect();
+		
 		Graph<Node,Vertex> graph = new DirectedSparseMultigraph<Node,Vertex>();
 		HashMap<String, Node> nodeMap = new HashMap<String, Node>();
 		nodeMap.put(classe, new Node(classe));
@@ -42,13 +48,13 @@ public class GraphCreator {
 		while (rs.hasNext()) {
 			QuerySolution sol = rs.next();
 			RDFNode rel = sol.get("relation");
-			RDFNode obj = sol.get("otherclass");
+			RDFNode c = sol.get("otherclass");
 			
-			if (!nodeMap.containsKey(obj.toString())) {
-				nodeMap.put(obj.toString(), new Node(obj.toString()));
+			if (!nodeMap.containsKey(c.toString())) {
+				nodeMap.put(c.toString(), new Node(c.toString()));
 			}
 			
-			graph.addEdge(new Vertex(rel.toString()), nodeMap.get(classe), nodeMap.get(obj.toString()));
+			graph.addEdge(new Vertex(rel.toString()), nodeMap.get(classe), nodeMap.get(c.toString()));
 		}
 		
 		return GraphCreator.visualization(graph);
@@ -68,21 +74,21 @@ public class GraphCreator {
 	
 	public static JPanel createGraph_A3(String classe, int limit) {
 		ResultSet rs = query.execSelect();
-	}
+	}*/
 	
 	public static Graph<Node,Vertex> create(ResultSet res) {
 		Graph<Node,Vertex> graph = new DirectedSparseMultigraph<Node,Vertex>();
 				
 		graph.addEdge(new Vertex("link"), new Node("n1"), new Node("n2"));
 		return graph;
-	}*/
+	}
 	
 	public static JPanel visualization(Graph<Node,Vertex> g) {
 		Layout<Integer, String> layout = new CircleLayout(g);
 		layout.setSize(new Dimension(300,300));
 		BasicVisualizationServer<Integer,String> vv = new BasicVisualizationServer<Integer,String>(layout);
 		vv.setPreferredSize(new Dimension(350,350));
-		
+		/*
 		Transformer<Integer,Paint> vertexPaint = new Transformer<Integer,Paint>() {
 			public Paint transform(Integer i) {
 				return Color.GREEN;
@@ -102,7 +108,7 @@ public class GraphCreator {
 		vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
 		vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller());
 		vv.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);
-		
+		*/
 		JPanel panel = new JPanel();
 		panel.add(vv);
 		return panel;
