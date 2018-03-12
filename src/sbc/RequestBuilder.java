@@ -39,12 +39,63 @@ public class RequestBuilder {
 		sb.append(PREFIX);
 		sb.append("SELECT DISTINCT ?relation ?otherclass\n");
 		sb.append("WHERE{\n");
-		sb.append("?otherclass ?relation <http://dbpedia.org/ontology/Planet>.\n");
+		sb.append("?otherclass ?relation <"+ classe +">.\n");
 		//sb.append("?otherclass rdf:type owl:Class .\n"); // si on veux tout prendre rafinage possible
 		sb.append("FILTER (?relation != rdf:type) .\n");
 		sb.append("}\n");
 		sb.append("GROUP BY ?relation ?otherclass\n");
 		sb.append("LIMIT "+limit+" OFFSET 0\n");
+		System.out.println(sb.toString());
+		
+		return QueryFactory.create(sb.toString());
+	}
+	
+	public static Query A2_R1(String classe , int limit){
+		StringBuilder sb = new StringBuilder();
+		sb.append(PREFIX);
+		sb.append("SELECT DISTINCT ?parentclass ?superclass\n");
+		sb.append("WHERE{\n");
+		sb.append("<"+ classe +"> (rdfs:subClassOf)* ?parentclass .\n");
+		//sb.append("?otherclass rdf:type owl:Class .\n"); // si on veux tout prendre rafinage possible
+		sb.append("?parentclass rdfs:subClassOf ?superclass .\n");
+		sb.append("}\n");
+		//sb.append("GROUP BY ?relation ?otherclass\n");
+		sb.append("LIMIT "+limit+" OFFSET 0\n");
+		System.out.println(sb.toString());
+		
+		return QueryFactory.create(sb.toString());
+	}
+	
+	public static Query A2_R2(String classe , int limit){
+		StringBuilder sb = new StringBuilder();
+		sb.append(PREFIX);
+		sb.append("SELECT DISTINCT ?subclass ?superclass\n");
+		sb.append("WHERE{\n");
+		sb.append("?subclass (rdfs:subClassOf)+ <"+ classe +">.\n");
+		sb.append("?subclass rdfs:subClassOf ?superclass.\n");
+		sb.append("?subclass rdf:type owl:Class.\n");
+		sb.append("?superclass rdf:type owl:Class.\n"); 
+		sb.append("}\n");
+		//sb.append("GROUP BY ?relation ?otherclass\n");
+		sb.append("LIMIT "+limit+" OFFSET 0\n");
+		System.out.println(sb.toString());
+		
+		return QueryFactory.create(sb.toString());
+	}
+	
+	public static Query A3(String classe , int limit){
+		StringBuilder sb = new StringBuilder();
+		sb.append(PREFIX);
+		sb.append("SELECT DISTINCT ?parentclass ?superclass\n");
+		sb.append("WHERE{\n");
+		sb.append("<http://dbpedia.org/ontology/Planet> (rdfs:subClassOf)+ ?parentclass .\n");
+		sb.append("?subclass rdfs:subClassOf ?superclass.\n");
+		sb.append("?subclass rdf:type owl:Class.\n");
+		sb.append("?superclass rdf:type owl:Class.\n"); 
+		sb.append("}\n");
+		//sb.append("GROUP BY ?relation ?otherclass\n");
+		sb.append("LIMIT "+limit+" OFFSET 0\n");
+		
 		System.out.println(sb.toString());
 		
 		return QueryFactory.create(sb.toString());
@@ -59,8 +110,10 @@ public class RequestBuilder {
 	}
 
 	public static void main(String[] args) {
-		RunQuery(A1_R1("http://dbpedia.org/ontology/CelestialBody", 100));
-		RunQuery(A1_R2("http://dbpedia.org/ontology/CelestialBody", 100));
+		//RunQuery(A1_R1("http://dbpedia.org/ontology/CelestialBody", 100));
+		//RunQuery(A1_R2("http://dbpedia.org/ontology/CelestialBody", 100));
+		RunQuery(A2_R1("http://dbpedia.org/ontology/CelestialBody", 100));
+		RunQuery(A2_R2("http://dbpedia.org/ontology/CelestialBody", 1000));
 	}
 	
 }
