@@ -5,11 +5,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Paint;
 import java.awt.Stroke;
-
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import org.apache.commons.collections15.Transformer;
+import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.ResultSet;
 
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
@@ -27,12 +26,36 @@ public class GraphCreator {
 		
 	}
 	
-	public static void createGraph_A1_R1() {
-		
+	public static void createGraph_A1_R1(QueryExecution query) {
+		ResultSet rs = query.execSelect();
 	}
 	
-	public static void createGraph_A1_R2() {
-		
+	public static void createGraph_A1_R2(QueryExecution query) {
+		ResultSet rs = query.execSelect();
+	}
+	
+	public static void createGraph_A2(QueryExecution query) {
+		ResultSet rs = query.execSelect();
+	}
+	
+	public static void createGraph_A3(QueryExecution query) {
+		ResultSet rs = query.execSelect();
+	}
+	
+	public static void createGraph_B1(QueryExecution query) {
+		ResultSet rs = query.execSelect();
+	}
+	
+	public static void createGraph_B3(QueryExecution query) {
+		ResultSet rs = query.execSelect();
+	}
+	
+	public static void createGraph_C1(QueryExecution query) {
+		ResultSet rs = query.execSelect();
+	}
+	
+	public static void createGraph_C2(QueryExecution query) {
+		ResultSet rs = query.execSelect();
 	}
 	
 	public static Graph<Node,Vertex> create(ResultSet res) {
