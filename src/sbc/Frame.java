@@ -20,17 +20,27 @@ public class Frame extends JFrame{
 	    endpointPanel.setBackground(Color.LIGHT_GRAY);
 	    endpointPanel.setPreferredSize(new Dimension(topPanel.getPreferredSize().width/3,50));
 	    JTextField endpoint = new JTextField();
-	    endpoint.setPreferredSize(new Dimension(80, 20));
-	    endpoint.setMaximumSize(new Dimension(80, 20));
+	    endpoint.setPreferredSize(new Dimension(200, 20));
+	    endpoint.setMaximumSize(new Dimension(150, 20));
 	    endpointPanel.add(endpoint);
 	    
 	    JPanel classPanel = new JPanel();
+	    classPanel.setLayout(new GridBagLayout());
 	    classPanel.setBackground(Color.LIGHT_GRAY);
 	    classPanel.setPreferredSize(new Dimension(topPanel.getPreferredSize().width/3, 50));
+	    JTextField classe = new JTextField();
+	    classe.setPreferredSize(new Dimension(200, 20));
+	    classe.setMaximumSize(new Dimension(150, 20));
+	    classPanel.add(classe);
 	    
 	    JPanel propertyPanel = new JPanel();
+	    propertyPanel.setLayout(new GridBagLayout());
 	    propertyPanel.setBackground(Color.LIGHT_GRAY);
 	    propertyPanel.setPreferredSize(new Dimension(topPanel.getPreferredSize().width/3,50));
+	    JTextField property = new JTextField();
+	    property.setPreferredSize(new Dimension(200, 20));
+	    property.setMaximumSize(new Dimension(150, 20));
+	    //propertyPanel.add(property);
 	    
 	    topPanel.add(endpointPanel, BorderLayout.WEST);
 	    topPanel.add(classPanel);
