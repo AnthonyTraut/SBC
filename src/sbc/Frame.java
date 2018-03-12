@@ -15,6 +15,10 @@ public class Frame extends JFrame{
 	    menuPanel.setPreferredSize(new Dimension(300, 800));
 	    menuPanel.setBackground(Color.LIGHT_GRAY);
 	    
+	    JPanel midPanel = new JPanel();
+	    midPanel.setLayout(new BorderLayout());
+	    midPanel.setBackground(Color.WHITE);
+	    
 	    JPanel params = new JPanel();
 	    params.setLayout(new BoxLayout(params, BoxLayout.Y_AXIS));
 	    params.setPreferredSize(new Dimension(300, 250));
@@ -86,7 +90,7 @@ public class Frame extends JFrame{
 	    request1Panel.setBackground(Color.LIGHT_GRAY);
 	    JCheckBox request1 = new JCheckBox("Relations théoriques");
 	    request1.setBackground(Color.LIGHT_GRAY);
-	    request1.addActionListener(new RequestHandler("A1", classe, limit));
+	    request1.addActionListener(new RequestHandler("A1", classe, limit, midPanel));
 	    request1Panel.add(Box.createRigidArea(new Dimension(20,0)));
 	    request1Panel.add(request1);
 	    request1Panel.add(Box.createHorizontalGlue());
@@ -96,7 +100,7 @@ public class Frame extends JFrame{
 	    request2Panel.setBackground(Color.LIGHT_GRAY);
 	    JCheckBox request2 = new JCheckBox("Hierarchie");
 	    request2.setBackground(Color.LIGHT_GRAY);
-	    request2.addActionListener(new RequestHandler("A2", classe, limit));
+	    request2.addActionListener(new RequestHandler("A2", classe, limit, midPanel));
 	    request2Panel.add(Box.createRigidArea(new Dimension(20,0)));
 	    request2Panel.add(request2);
 	    request2Panel.add(Box.createHorizontalGlue());
@@ -106,7 +110,7 @@ public class Frame extends JFrame{
 	    request3Panel.setBackground(Color.LIGHT_GRAY);
 	    JCheckBox request3 = new JCheckBox("Relations instanciées");
 	    request3.setBackground(Color.LIGHT_GRAY);
-	    request3.addActionListener(new RequestHandler("A3", classe, limit));
+	    request3.addActionListener(new RequestHandler("A3", classe, limit, midPanel));
 	    request3Panel.add(Box.createRigidArea(new Dimension(20,0)));
 	    request3Panel.add(request3);
 	    request3Panel.add(Box.createHorizontalGlue());
@@ -121,11 +125,6 @@ public class Frame extends JFrame{
 	    
 	    menuPanel.add(params, BorderLayout.NORTH);	  
 	    menuPanel.add(requestsPanel, BorderLayout.CENTER);	 
-	    
-	    JPanel midPanel = new JPanel();
-	    midPanel.setLayout(new BorderLayout());
-	    midPanel.setBackground(Color.WHITE);
-	    midPanel.add(GraphCreator.createGraph_A1("http://dbpedia.org/ontology/Planet", 10));
 	    
 	    this.getContentPane().setLayout(new BorderLayout());
 	    this.getContentPane().add(menuPanel, BorderLayout.WEST);
