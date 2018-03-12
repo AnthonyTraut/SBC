@@ -23,28 +23,46 @@ public class RequestHandler implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		JCheckBox cb = (JCheckBox)e.getSource();
 		switch(request){
 		case "A1":
-			JCheckBox cb = (JCheckBox)e.getSource();
 			if(cb.isSelected()){
-				String classe1 = classeComp.getText();
-				int limit1 = Integer.parseInt(limitComp.getText());
-				JPanel panel1 = GraphCreator.createGraph_A1(classe1, limit1);
-				panel.add(panel1);
-				panel.repaint();
-				panel.revalidate();
+				String classe = classeComp.getText();
+				int limit = Integer.parseInt(limitComp.getText());
+				JPanel newPanel = GraphCreator.createGraph_A1(classe, limit);
+				panel.add(newPanel);
 			}
+			else{
+				panel.removeAll();
+			}
+			panel.repaint();
+			panel.revalidate();
+			break;
 		case "A2":
-			String classe2 = classeComp.getText();
-			int limit2 = Integer.parseInt(limitComp.getText());
-			//GraphCreator.createGraph_A1(classe1, limit1);
-			//panel.add(panel2);
+			if(cb.isSelected()){
+				String classe = classeComp.getText();
+				int limit = Integer.parseInt(limitComp.getText());
+				JPanel newPanel = GraphCreator.createGraph_A2(classe, limit);
+				panel.add(newPanel);
+			}
+			else{
+				panel.removeAll();
+			}
+			panel.repaint();
+			panel.revalidate();
 			break;
 		case "A3":
-			String classe3 = classeComp.getText();
-			int limit3 = Integer.parseInt(limitComp.getText());
-			//GraphCreator.createGraph_A1(classe1, limit1);
-			//panel.add(panel3);
+			if(cb.isSelected()){
+				String classe = classeComp.getText();
+				int limit = Integer.parseInt(limitComp.getText());
+				JPanel newPanel = GraphCreator.createGraph_A3(classe, limit);
+				panel.add(newPanel);
+			}
+			else{
+				panel.removeAll();
+			}
+			panel.repaint();
+			panel.revalidate();
 			break;
 		}
 	}
