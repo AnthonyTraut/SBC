@@ -29,7 +29,8 @@ public class RequestHandler implements ActionListener {
 			if(cb.isSelected()){
 				String classe = classeComp.getText();
 				int limit = Integer.parseInt(limitComp.getText());
-				JPanel newPanel = GraphCreator.createGraph_A1(classe, limit);
+				JPanel newPanel = GraphCreator.createGraph(classe, limit, "A1");
+				//TODO : changer pour utiliser GraphCreator.createGraph_A(classe, limit, A1, A2, A3) avec Ai==true si on a coché l'option i
 				panel.add(newPanel);
 			}
 			else{
@@ -42,7 +43,7 @@ public class RequestHandler implements ActionListener {
 			if(cb.isSelected()){
 				String classe = classeComp.getText();
 				int limit = Integer.parseInt(limitComp.getText());
-				JPanel newPanel = GraphCreator.createGraph_A2(classe, limit);
+				JPanel newPanel = GraphCreator.createGraph(classe, limit, "A2");
 				panel.add(newPanel);
 			}
 			else{
@@ -55,7 +56,7 @@ public class RequestHandler implements ActionListener {
 			if(cb.isSelected()){
 				String classe = classeComp.getText();
 				int limit = Integer.parseInt(limitComp.getText());
-				JPanel newPanel = GraphCreator.createGraph_A3(classe, limit);
+				JPanel newPanel = GraphCreator.createGraph(classe, limit, "A3");
 				panel.add(newPanel);
 			}
 			else{

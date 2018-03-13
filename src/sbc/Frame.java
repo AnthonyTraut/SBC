@@ -88,7 +88,7 @@ public class Frame extends JFrame{
 	    JPanel request1Panel = new JPanel();
 	    request1Panel.setLayout(new BoxLayout(request1Panel, BoxLayout.X_AXIS));
 	    request1Panel.setBackground(Color.LIGHT_GRAY);
-	    JCheckBox request1 = new JCheckBox("Relations théoriques");
+	    JCheckBox request1 = new JCheckBox("Relations theoriques");
 	    request1.setBackground(Color.LIGHT_GRAY);
 	    request1.addActionListener(new RequestHandler("A1", classe, limit, midPanel));
 	    request1Panel.add(Box.createRigidArea(new Dimension(20,0)));
@@ -108,7 +108,7 @@ public class Frame extends JFrame{
 	    JPanel request3Panel = new JPanel();
 	    request3Panel.setLayout(new BoxLayout(request3Panel, BoxLayout.X_AXIS));
 	    request3Panel.setBackground(Color.LIGHT_GRAY);
-	    JCheckBox request3 = new JCheckBox("Relations instanciées");
+	    JCheckBox request3 = new JCheckBox("Relations instanciees");
 	    request3.setBackground(Color.LIGHT_GRAY);
 	    request3.addActionListener(new RequestHandler("A3", classe, limit, midPanel));
 	    request3Panel.add(Box.createRigidArea(new Dimension(20,0)));
@@ -134,5 +134,5 @@ public class Frame extends JFrame{
 	    this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);             
 	    this.setVisible(true);
-	    }
+	}
 }
