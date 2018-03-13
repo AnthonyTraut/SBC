@@ -1,0 +1,23 @@
+The schema extraction in LD-VOWL uses a class-centric perspective, i.e., the classes are extracted first and define the view on the Linked Data source. The classes are then connected by properties and enriched by datatypes. A class centric perspective is very common in ontology engineering and fits well with the node-link paradigm of the graph visualization that the VOWL notation is based upon [13].
+
+The extraction is realized by dynamically generated SPARQL queries revealing the schema information from a given dataset based on a couple of assumptions. ince the SPARQL endpoints of Linked Data sources can have strict limits in terms of execution time, the queries must not be too complex.
+
+1. Extraction of classes with the most instances :
+    A generic SPARQL query asking for the n classes with the most instances is sent to the endpoint first
+    1.a. Filter the classes and properties of DF, RDFS, OWL and optionally SKOS
+    1.b. Customise filters (add or remove class or properties)
+    1.c. Choose the parameter n
+
+2. Detection of subclasses, equivalent and disjoint classes :
+    Based on (1), further SPARQL queries are sent to the endpoint in order to detect classes that can be considered equivalent, subclasses or disjoint classes. This is done by a pairwise comparison of the numbers of shared instances
+for all n classes.
+    2.a. 
+    2.b. 
+    2.c. 
+
+3. Retrieval of object properties :
+    
+    
+4. Retrieval of datatype properties :
+    
+    
