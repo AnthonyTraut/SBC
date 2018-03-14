@@ -33,7 +33,7 @@ public class GraphCreator {
 	private static HashMap<String, Vertex> nodeMap = new HashMap<String, Vertex>();
 		
 	/**
-	 * Permet de reset le graphe maintenu en mémoire
+	 * Permet de reset le graphe maintenu en mï¿½moire
 	 */
 	public static void resetGraph() {
 		GraphCreator.graph = new DirectedSparseMultigraph<Vertex,Edge>();//DelegateTree<Vertex, Edge>();
@@ -49,7 +49,7 @@ public class GraphCreator {
 	}
 	
 	/**
-	 * Exécute une query
+	 * Exï¿½cute une query
 	 * @param query
 	 * @return
 	 */
@@ -63,46 +63,22 @@ public class GraphCreator {
 	 * @param classe
 	 * @param limit
 	 * @param A1 : Recherche relation T-Box avec autres classes
-	 * @param A2 : Recherche ancêtres et descendants
-	 * @param A3 : Recherche les prédicats les plus instanciées
+	 * @param A2 : Recherche ancï¿½tres et descendants
+	 * @param A3 : Recherche les prï¿½dicats les plus instanciï¿½es
 	 * @return
 	 */
-	public static JPanel createGraph_A(String classe, int limit, boolean A1, boolean A2, boolean A3) {
+	public static JPanel createGraph_A(String classe, int limitA1, int limitA2, int limitA3, boolean A1, boolean A2, boolean A3) {
 		GraphCreator.resetGraph();
 		
 		if (A2) {
-			GraphCreator.createGraph_A2(classe, limit);
+			GraphCreator.createGraph_A2(classe, limitA2);
 		}
 		if (A1) {
-			GraphCreator.createGraph_A1(classe, limit);
+			GraphCreator.createGraph_A1(classe, limitA1);
 		}
 		if (A3) {
-			GraphCreator.createGraph_A3(classe, limit);
+			GraphCreator.createGraph_A3(classe, limitA3);
 		}
-		return GraphCreator.visualization();
-	}
-	
-	/**
-	 * TEMPORAIRE LE TEMPS DE PASSER A createGraph_A
-	 * @param classe
-	 * @param limit
-	 * @param A
-	 * @return
-	 */
-	public static JPanel createGraph(String classe, int limit, String A) {
-		GraphCreator.resetGraph();
-		
-		if (A.equals("A1")) {
-			GraphCreator.createGraph_A1(classe, limit);
-			System.out.println("test");
-			return GraphCreator.visualization();
-		}
-		if (A.equals("A2")) {
-			GraphCreator.createGraph_A2(classe, limit);
-			return GraphCreator.visualization();
-		}
-		// else : (A.equals("A3"))
-		GraphCreator.createGraph_A3(classe, limit);
 		return GraphCreator.visualization();
 	}
 	
@@ -149,7 +125,7 @@ public class GraphCreator {
 				
 			}
 			
-			// Vérification que l'arc n'existe pas deja avant l'ajout
+			// Vï¿½rification que l'arc n'existe pas deja avant l'ajout
 			boolean alreadyExist = false;
 			if (GraphCreator.graph.containsVertex(n_classeSource) && GraphCreator.graph.containsVertex(n_cla)) {
 				for(Edge e : GraphCreator.graph.findEdgeSet(n_classeSource, n_cla)) {
@@ -190,7 +166,7 @@ public class GraphCreator {
 				
 			}
 			
-			// Vérification que l'arc n'existe pas deja avant l'ajout
+			// Vï¿½rification que l'arc n'existe pas deja avant l'ajout
 			boolean alreadyExist = false;
 			if (GraphCreator.graph.containsVertex(n_cla) && GraphCreator.graph.containsVertex(n_classeSource)) {
 				for(Edge e : GraphCreator.graph.findEdgeSet(n_cla, n_classeSource)) {
@@ -254,7 +230,7 @@ public class GraphCreator {
 				
 			}
 			
-			// Vérification que l'arc n'existe pas deja avant l'ajout
+			// Vï¿½rification que l'arc n'existe pas deja avant l'ajout
 			boolean alreadyExist = false;
 			if (GraphCreator.graph.containsVertex(n_parent) && GraphCreator.graph.containsVertex(n_super)) {
 				for(Edge e : GraphCreator.graph.findEdgeSet(n_parent, n_super)) {
@@ -302,7 +278,7 @@ public class GraphCreator {
 				
 			}
 			
-			// Vérification que l'arc n'existe pas deja avant l'ajout
+			// Vï¿½rification que l'arc n'existe pas deja avant l'ajout
 			boolean alreadyExist = false;
 			if (GraphCreator.graph.containsVertex(n_sub) && GraphCreator.graph.containsVertex(n_super)) {
 				for(Edge e : GraphCreator.graph.findEdgeSet(n_sub, n_super)) {
@@ -335,13 +311,13 @@ public class GraphCreator {
 			GraphCreator.nodeMap.put(classe, n_classe);
 		}
 		
-		// Afficher les predicats de la A-Box les plus instanciées par des instances de la classe source
+		// Afficher les predicats de la A-Box les plus instanciï¿½es par des instances de la classe source
 		QueryExecution queryexec = GraphCreator.execQuery(RequestBuilder.A3(classe, limit));
 		ResultSet res = queryexec.execSelect();
 		while (res.hasNext()) {
 			QuerySolution sol = res.next();
 			
-			// Le nombre d'instances qui instancie le prédicat
+			// Le nombre d'instances qui instancie le prï¿½dicat
 			RDFNode count = sol.get("count");
 			String temp = count.toString();
 			String s_count = "";
@@ -350,15 +326,15 @@ public class GraphCreator {
 				s_count = s_count + temp.charAt(i);
 				i++;
 			}
-			Vertex n_count = new Vertex("", s_count,Color.CYAN);
+			Edge n_count = new Edge("", s_count,"A-Box");
 			
-			// Le predicat instancié
+			// Le predicat instanciï¿½
 			RDFNode pre = sol.get("predicat");
 			String url_pre = pre.toString();
 			String s_pre = pre.toString().split("/")[pre.toString().split("/").length-1];
-			Edge predicat = new Edge(url_pre, s_pre, "A-Box");
+			Vertex predicat = new Vertex(url_pre, s_pre, Color.CYAN);
 			
-			GraphCreator.graph.addEdge(predicat, n_classe, n_count);
+			GraphCreator.graph.addEdge(n_count, n_classe, predicat);
 		}
 	}
 	
