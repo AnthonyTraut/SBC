@@ -66,6 +66,22 @@ public class RequestBuilder {
 		return QueryFactory.create(sb.toString());
 	}
 	
+	public static Query A2_R1(String classe , int limit, int max){
+		StringBuilder sb = new StringBuilder();
+		sb.append(PREFIX);
+		sb.append("SELECT DISTINCT ?parentclass ?superclass\n");
+		sb.append("WHERE{\n");
+		sb.append("<"+ classe +"> (rdfs:subClassOf){0,"+ max+"} ?parentclass .\n");
+		//sb.append("?otherclass rdf:type owl:Class .\n"); // si on veux tout prendre rafinage possible
+		sb.append("?parentclass rdfs:subClassOf ?superclass .\n");
+		sb.append("}\n");
+		//sb.append("GROUP BY ?relation ?otherclass\n");
+		sb.append("LIMIT "+limit+" OFFSET 0\n");
+		System.out.println(sb.toString());
+		
+		return QueryFactory.create(sb.toString());
+	}
+	
 	public static Query A2_R2(String classe , int limit){
 		StringBuilder sb = new StringBuilder();
 		sb.append(PREFIX);
@@ -77,6 +93,23 @@ public class RequestBuilder {
 		sb.append("?superclass rdf:type owl:Class.\n"); 
 		sb.append("}\n");
 		//sb.append("GROUP BY ?predicat ?otherclass\n");
+		sb.append("LIMIT "+limit+" OFFSET 0\n");
+		System.out.println(sb.toString());
+		
+		return QueryFactory.create(sb.toString());
+	}
+	
+	public static Query A2_R2(String classe , int limit,int  max){
+		StringBuilder sb = new StringBuilder();
+		sb.append(PREFIX);
+		sb.append("SELECT DISTINCT ?subclass ?superclass\n");
+		sb.append("WHERE{\n");
+		sb.append("?subclass (rdfs:subClassOf){1,"+ max +"} <"+ classe +">.\n");
+		sb.append("?subclass rdfs:subClassOf ?superclass.\n");
+		sb.append("?subclass rdf:type owl:Class.\n");
+		sb.append("?superclass rdf:type owl:Class.\n"); 
+		sb.append("}\n");
+		//sb.append("GROUP BY ?relation ?otherclass\n");
 		sb.append("LIMIT "+limit+" OFFSET 0\n");
 		System.out.println(sb.toString());
 		
@@ -170,12 +203,12 @@ public class RequestBuilder {
 	public static void main(String[] args) {
 		//RunQuery(A1_R1("http://dbpedia.org/ontology/CelestialBody", 100));
 		//RunQuery(A1_R2("http://dbpedia.org/ontology/CelestialBody", 100));
-		//RunQuery(A2_R1("http://dbpedia.org/ontology/CelestialBody", 100));
+		RunQuery(A2_R1("http://dbpedia.org/ontology/CelestialBody", 100));
 		//RunQuery(A2_R2("http://dbpedia.org/ontology/CelestialBody", 1000));
 		//RunQuery(A3("http://dbpedia.org/ontology/Planet", 100));
 		//RunQuery(B1("http://dbpedia.org/ontology/CelestialBody", 100));
 		//RunQuery(C1("http://dbpedia.org/resource/Naboo", 100));
-		RunQuery(C2("http://dbpedia.org/resource/Naboo", 100));
+		//RunQuery(C2("http://dbpedia.org/resource/Naboo", 100));
 	}
 	
 }
