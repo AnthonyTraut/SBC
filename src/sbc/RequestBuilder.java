@@ -20,14 +20,14 @@ public class RequestBuilder {
 	public static Query A1_R1(String classe , int limit){
 		StringBuilder sb = new StringBuilder();
 		sb.append(PREFIX);
-		sb.append("SELECT DISTINCT ?relation ?otherclass\n");
+		sb.append("SELECT DISTINCT ?predicat ?otherclass\n");
 		sb.append("WHERE{\n");
-		sb.append("<"+ classe +"> ?relation ?otherclass.\n");
+		sb.append("<"+ classe +"> ?predicat ?otherclass.\n");
 		//sb.append("?otherclass rdf:type owl:Class .\n"); // si on veux tout prendre rafinage possible
-		sb.append("FILTER (?relation != rdfs:label ).\n");
-		sb.append("FILTER (?relation != rdfs:comment).\n");
+		sb.append("FILTER (?predicat != rdfs:label ).\n");
+		sb.append("FILTER (?predicat != rdfs:comment).\n");
 		sb.append("}\n");
-		sb.append("GROUP BY ?relation ?otherclass\n");
+		sb.append("GROUP BY ?predicat ?otherclass\n");
 		sb.append("LIMIT "+limit+" OFFSET 0\n");
 		System.out.println(sb.toString());
 		
@@ -37,13 +37,13 @@ public class RequestBuilder {
 	public static Query A1_R2(String classe , int limit){
 		StringBuilder sb = new StringBuilder();
 		sb.append(PREFIX);
-		sb.append("SELECT DISTINCT ?relation ?otherclass\n");
+		sb.append("SELECT DISTINCT ?predicat ?otherclass\n");
 		sb.append("WHERE{\n");
-		sb.append("?otherclass ?relation <"+ classe +">.\n");
+		sb.append("?otherclass ?predicat <"+ classe +">.\n");
 		//sb.append("?otherclass rdf:type owl:Class .\n"); // si on veux tout prendre rafinage possible
-		sb.append("FILTER (?relation != rdf:type) .\n");
+		sb.append("FILTER (?predicat != rdf:type) .\n");
 		sb.append("}\n");
-		sb.append("GROUP BY ?relation ?otherclass\n");
+		sb.append("GROUP BY ?predicat ?otherclass\n");
 		sb.append("LIMIT "+limit+" OFFSET 0\n");
 		System.out.println(sb.toString());
 		
@@ -59,7 +59,7 @@ public class RequestBuilder {
 		//sb.append("?otherclass rdf:type owl:Class .\n"); // si on veux tout prendre rafinage possible
 		sb.append("?parentclass rdfs:subClassOf ?superclass .\n");
 		sb.append("}\n");
-		//sb.append("GROUP BY ?relation ?otherclass\n");
+		//sb.append("GROUP BY ?predicat ?otherclass\n");
 		sb.append("LIMIT "+limit+" OFFSET 0\n");
 		System.out.println(sb.toString());
 		
@@ -92,7 +92,7 @@ public class RequestBuilder {
 		sb.append("?subclass rdf:type owl:Class.\n");
 		sb.append("?superclass rdf:type owl:Class.\n"); 
 		sb.append("}\n");
-		//sb.append("GROUP BY ?relation ?otherclass\n");
+		//sb.append("GROUP BY ?predicat ?otherclass\n");
 		sb.append("LIMIT "+limit+" OFFSET 0\n");
 		System.out.println(sb.toString());
 		
@@ -119,21 +119,21 @@ public class RequestBuilder {
 	public static Query A3(String classe , int limit){
 		StringBuilder sb = new StringBuilder();
 		sb.append(PREFIX);
-		sb.append("SELECT (COUNT(?otherinstance) AS ?count) ?relation\n");
+		sb.append("SELECT (COUNT(?otherinstance) AS ?count) ?predicat\n");
 		sb.append("WHERE{\n");
 			sb.append("?instance rdf:type <"+ classe +">.\n");
 			sb.append("{\n");
-				sb.append("?instance ?relation ?otherinstance .\n");
+				sb.append("?instance ?predicat ?otherinstance .\n");
 				sb.append("?otherinstance rdf:type ?class .\n");
 				sb.append("?class rdf:type owl:Class\n");
 			sb.append("} UNION\n");
 			sb.append("{\n");
-				sb.append("?otherinstance ?relation ?instance .\n");
+				sb.append("?otherinstance ?predicat ?instance .\n");
 				sb.append("?otherinstance rdf:type ?class .\n");
 				sb.append("?class rdf:type owl:Class\n");
 			sb.append("}\n");
 		sb.append("}\n");
-		sb.append("GROUP BY ?relation\n");
+		sb.append("GROUP BY ?predicat\n");
 		sb.append("ORDER BY DESC(?count)\n");
 		sb.append("LIMIT "+limit+" OFFSET 0\n");
 		
@@ -179,9 +179,9 @@ public class RequestBuilder {
 	public static Query C2(String ressource , int limit){
 		StringBuilder sb = new StringBuilder();
 		sb.append(PREFIX);
-		sb.append("SELECT DISTINCT ?relation ?instance\n");
+		sb.append("SELECT DISTINCT ?predicat ?instance\n");
 		sb.append("WHERE{\n");
-			sb.append("<"+ ressource +"> ?relation ?instance .\n");
+			sb.append("<"+ ressource +"> ?predicat ?instance .\n");
 			sb.append("?instance rdf:type ?classs .\n");
 			//sb.append("?class rdf:type owl:Class  .\n");
 		sb.append("}\n");

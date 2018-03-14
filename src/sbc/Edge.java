@@ -1,17 +1,15 @@
 package sbc;
 
-import java.awt.Color;
+public class Edge {
 
-public class Vertex {
-	
 	private String URL;
 	private String label;
-	private Color color;
+	private String boxType;
 	
-	public Vertex(String URL, String label, Color color) {
+	public Edge(String URL, String label, String boxType) {
 		this.URL=URL;
 		this.label=label;
-		this.color=color;
+		this.boxType=boxType;
 	}
 	
 	public void setURL(String URL) {
@@ -26,15 +24,15 @@ public class Vertex {
 	public String getLabel() {
 		return this.label;
 	}
-	public void setColor(Color color) {
-		this.color=color;
+	public void setBoxType(String boxType) {
+		this.boxType=boxType;
 	}
-	public Color getColor() {
-		return this.color;
+	public String getBoxType() {
+		return this.boxType;
 	}
 	
 	public String toString() {
 		return this.label;
 	}
-
+	
 }
