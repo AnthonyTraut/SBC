@@ -9,13 +9,17 @@ import javax.swing.JTextField;
 
 public class RequestHandler implements ActionListener {
 	
-	String request;
+	JCheckBox request1;
+	JCheckBox request2;
+	JCheckBox request3;
 	JTextField classeComp;
 	JTextField limitComp;
 	JPanel panel;
 	
-	public RequestHandler(String request, JTextField classe, JTextField limit, JPanel panel){
-		this.request = request;
+	public RequestHandler(JCheckBox request1, JCheckBox request2, JCheckBox request3, JTextField classe, JTextField limit, JPanel panel){
+		this.request1 = request1;
+		this.request2 = request2;
+		this.request3 = request3;
 		this.classeComp = classe;
 		this.limitComp = limit;
 		this.panel = panel;
@@ -23,49 +27,18 @@ public class RequestHandler implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JCheckBox cb = (JCheckBox)e.getSource();
-		switch(request){
-		case "A1":
-			if(cb.isSelected()){
-				String classe = classeComp.getText();
-				int limit = Integer.parseInt(limitComp.getText());
-				JPanel newPanel = GraphCreator.createGraph(classe, limit, "A1");
-				//TODO : changer pour utiliser GraphCreator.createGraph_A(classe, limit, A1, A2, A3) avec Ai==true si on a coché l'option i
-				panel.add(newPanel);
-			}
-			else{
-				panel.removeAll();
-			}
-			panel.repaint();
-			panel.revalidate();
-			break;
-		case "A2":
-			if(cb.isSelected()){
-				String classe = classeComp.getText();
-				int limit = Integer.parseInt(limitComp.getText());
-				JPanel newPanel = GraphCreator.createGraph(classe, limit, "A2");
-				panel.add(newPanel);
-			}
-			else{
-				panel.removeAll();
-			}
-			panel.repaint();
-			panel.revalidate();
-			break;
-		case "A3":
-			if(cb.isSelected()){
-				String classe = classeComp.getText();
-				int limit = Integer.parseInt(limitComp.getText());
-				JPanel newPanel = GraphCreator.createGraph(classe, limit, "A3");
-				panel.add(newPanel);
-			}
-			else{
-				panel.removeAll();
-			}
-			panel.repaint();
-			panel.revalidate();
-			break;
-		}
+		boolean r1, r2, r3;
+		r1 = request1.isSelected();
+		r2 = request2.isSelected();
+		r3 = request3.isSelected();
+		
+		panel.removeAll();
+		
+		JPanel graph = GraphCreator.createGraph_A(classeComp.getText(), Integer.parseInt(limitComp.getText()), r1, r2, r3);
+		panel.add(graph);
+		
+		panel.repaint();
+		panel.revalidate();
 	}
 
 }

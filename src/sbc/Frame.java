@@ -1,6 +1,7 @@
 package sbc;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
@@ -90,7 +91,6 @@ public class Frame extends JFrame{
 	    request1Panel.setBackground(Color.LIGHT_GRAY);
 	    JCheckBox request1 = new JCheckBox("Relations theoriques");
 	    request1.setBackground(Color.LIGHT_GRAY);
-	    request1.addActionListener(new RequestHandler("A1", classe, limit, midPanel));
 	    request1Panel.add(Box.createRigidArea(new Dimension(20,0)));
 	    request1Panel.add(request1);
 	    request1Panel.add(Box.createHorizontalGlue());
@@ -100,7 +100,6 @@ public class Frame extends JFrame{
 	    request2Panel.setBackground(Color.LIGHT_GRAY);
 	    JCheckBox request2 = new JCheckBox("Hierarchie");
 	    request2.setBackground(Color.LIGHT_GRAY);
-	    request2.addActionListener(new RequestHandler("A2", classe, limit, midPanel));
 	    request2Panel.add(Box.createRigidArea(new Dimension(20,0)));
 	    request2Panel.add(request2);
 	    request2Panel.add(Box.createHorizontalGlue());
@@ -110,10 +109,14 @@ public class Frame extends JFrame{
 	    request3Panel.setBackground(Color.LIGHT_GRAY);
 	    JCheckBox request3 = new JCheckBox("Relations instanciees");
 	    request3.setBackground(Color.LIGHT_GRAY);
-	    request3.addActionListener(new RequestHandler("A3", classe, limit, midPanel));
 	    request3Panel.add(Box.createRigidArea(new Dimension(20,0)));
 	    request3Panel.add(request3);
 	    request3Panel.add(Box.createHorizontalGlue());
+	    
+	    ActionListener requestHandler = new RequestHandler(request1, request2, request3, classe, limit, midPanel);
+	    request1.addActionListener(requestHandler);
+	    request2.addActionListener(requestHandler);
+	    request3.addActionListener(requestHandler);
 	    
 	    requestsPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 	    requestsPanel.add(request1Panel);
